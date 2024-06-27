@@ -62,6 +62,14 @@ function clear() {
     waitingForSecondNumber = false;
 }
 
+function backspace() {
+    if (displayValue.length > 1) {
+        displayValue = displayValue.slice(0, -1);
+    } else {
+        displayValue = '0';
+    }
+}
+
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
         inputNumber(button.textContent);
