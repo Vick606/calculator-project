@@ -99,6 +99,10 @@ decimalButton.addEventListener('click', () => {
     inputDecimal();
     updateDisplay();
 });
+backspaceButton.addEventListener('click', () => {
+    backspace();
+    updateDisplay();
+});
 
 // Basic math functions
 function add(a, b) {
