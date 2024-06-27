@@ -11,6 +11,9 @@ const clearButton = document.querySelector('.clear');
 const decimalButton = document.querySelector('.decimal');
 
 function updateDisplay() {
+    if (displayValue.length > 10) {
+        displayValue = parseFloat(displayValue).toFixed(8);
+    }
     display.textContent = displayValue;
 }
 
