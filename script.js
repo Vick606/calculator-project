@@ -9,12 +9,15 @@ const operatorButtons = document.querySelectorAll('.operator');
 const equalsButton = document.querySelector('.equals');
 const clearButton = document.querySelector('.clear');
 const decimalButton = document.querySelector('.decimal');
+const backspaceButton = document.querySelector('.backspace');
+
 
 function updateDisplay() {
-    if (displayValue.length > 10) {
-        displayValue = parseFloat(displayValue).toFixed(8);
+    if (displayValue.length > 12) {
+        displayValue = parseFloat(displayValue).toExponential(5);
     }
     display.textContent = displayValue;
+    decimalButton.disabled = displayValue.includes('.');
 }
 
 function inputNumber(number) {
