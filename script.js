@@ -11,7 +11,6 @@ const clearButton = document.querySelector('.clear');
 const decimalButton = document.querySelector('.decimal');
 const backspaceButton = document.querySelector('.backspace');
 
-
 function updateDisplay() {
     if (displayValue.length > 12) {
         displayValue = parseFloat(displayValue).toExponential(5);
@@ -47,7 +46,15 @@ function handleOperator(nextOperator) {
         firstNumber = inputValue;
     } else if (operator) {
         const result = operate(operator, firstNumber, inputValue);
-        displayValue = `${parseFloat(result.toFixed(7))}`;
+        if (result === "Error: Division by zero") {
+            displayValue = result;
+            firstNumber = null;
+            operator = null;
+            waitingForSecondNumber = false;
+            updateDisplay();
+            return;
+        }
+        displayValue = String(result);
         firstNumber = result;
     }
 
@@ -70,6 +77,7 @@ function backspace() {
     }
 }
 
+// Event listeners
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
         inputNumber(button.textContent);
@@ -85,9 +93,14 @@ operatorButtons.forEach(button => {
 });
 
 equalsButton.addEventListener('click', () => {
-    if (!operator) return;
-    handleOperator('=');
-    updateDisplay();
+    if (operator && !waitingForSecondNumber) {
+        const secondNumber = parseFloat(displayValue);
+        displayValue = operate(operator, firstNumber, secondNumber);
+        firstNumber = null;
+        operator = null;
+        waitingForSecondNumber = false;
+        updateDisplay();
+    }
 });
 
 clearButton.addEventListener('click', () => {
@@ -99,6 +112,7 @@ decimalButton.addEventListener('click', () => {
     inputDecimal();
     updateDisplay();
 });
+
 backspaceButton.addEventListener('click', () => {
     backspace();
     updateDisplay();
@@ -118,7 +132,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return b === 0 ? "Error" : a / b;
+    return b === 0 ? "Error: Division by zero" : a / b;
 }
 
 function operate(operator, a, b) {
@@ -133,7 +147,8 @@ function operate(operator, a, b) {
             return multiply(a, b);
         case '/':
             return divide(a, b);
-        default:
+        case '%':
+            return (a / 100) * b; 
             return null;
     }
 }
