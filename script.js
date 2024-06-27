@@ -138,4 +138,15 @@ function operate(operator, a, b) {
     }
 }
 
+// Keyboard support
+document.addEventListener('keydown', (event) => {
+    if (event.key >= '0' && event.key <= '9') inputNumber(event.key);
+    if (event.key === '.') inputDecimal();
+    if (event.key === '+' || event.key === '-' || event.key === '*' || event.key === '/') handleOperator(event.key);
+    if (event.key === 'Enter' || event.key === '=') equalsButton.click();
+    if (event.key === 'Backspace') backspace();
+    if (event.key === 'Escape') clear();
+    updateDisplay();
+});
+
 updateDisplay();
